@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 # Create your views here.
 days = {'monday': 'Cписок дел, запланированных на понедельник.',
@@ -18,7 +18,8 @@ def get_info_about_week_day(request, week_day):
 
 
 def get_info_about_week_day_by_number(request, week_day: int):
+    daysKeys = list(days)
     if week_day <= 7:
-        return HttpResponse(f'Это число {week_day}')
+        return HttpResponseRedirect(f'/todo_week/{daysKeys[week_day - 1]}')
     else:
-        return HttpResponse(f'Неверный номер дня - {week_day}')
+        return HttpResponse(f'Это число {week_day}')
