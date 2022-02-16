@@ -9,17 +9,17 @@ from django.urls import reverse
 
 def rectangle(request, length, width):
     square_prem = length * width
-    return HttpResponse(f'Площадь прямоугольника размером {length}х{width} равна {square_prem}.')
+    return render(request, 'geometry/rectangle.html')
 
 
 def square(request, length: int):
     square_kvadrat = length * length
-    return HttpResponse(f'Площадь квадрата  размером {length}х{length} равна {square_kvadrat}.')
+    return render(request, 'geometry/square.html')
 
 
 def circle(request, radius):
     square_krug = pi * radius * radius
-    return HttpResponse(f'Площадь круга с радиусом {radius} равна {square_krug}.')
+    return render(request, 'geometry/circle.html')
 
 
 def get_rectangle_area(request, length, width):

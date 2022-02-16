@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import  reverse
+from django.urls import reverse
 
 # Create your views here.
 days = {'monday': 'Cписок дел, запланированных на понедельник.',
@@ -15,7 +15,7 @@ days = {'monday': 'Cписок дел, запланированных на по�
 
 def get_info_about_week_day(request, week_day):
     if week_day in days.keys():
-        return HttpResponse(days.get(week_day))
+        return render(request, 'week_days/greeting.html')
 
 
 def get_info_about_week_day_by_number(request, week_day: int):

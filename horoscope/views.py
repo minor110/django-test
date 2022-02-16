@@ -23,6 +23,20 @@ type_of_elements = {'fire': ['aries', 'leo', 'sagittarius'],
                     'water': ['cancer', 'scorpio', 'pisces']
                     }
 
+dates_of_zodiac = {"aries": [(21, 3), (20, 4)],
+                   "taurus": [(21, 4), (21, 5)],
+                   "gemini": [(22, 5), (21, 6)],
+                   "cancer": [(22, 6), (22, 7)],
+                   "leo": [(23, 7), (21, 8)],
+                   "virgo": [(22, 8), (23, 9)],
+                   "libra": [(24, 9), (23, 10)],
+                   "scorpio": [(24, 10), (22, 11)],
+                   "sagittarius": [(23, 11), (22, 12)],
+                   "capricorn": [(23, 12), (20, 1)],
+                   "aquarius": [(21, 1), (19, 2)],
+                   "pisces": [(20, 2), (20, 3)]
+                   }
+
 
 def index(request):
     li_elements = ''
@@ -50,11 +64,26 @@ def get_sign_type_list(request, stihia):
     return HttpResponse(response)
 
 
+def get_month_day(request, month, day):
+    sign = str()
+    last_sign = str()
+    for sign in dates_of_zodiac:
+        if month == dates_of_zodiac.get(sign)[0][1] and day >= dates_of_zodiac.get(sign)[0][0]:
+            break
+        elif month == dates_of_zodiac.get(sign)[0][1] and day < dates_of_zodiac.get(sign)[0][0]:
+            sign = last_sign
+            break
+        else:
+            last_sign = sign
+            continue
+    redirect_urls = reverse('horoscope-name', args=(sign,))
+    return HttpResponseRedirect(redirect_urls)
+
+
 def get_info_about_sign_zodiac(request, sign_zodiac: str):
     description = zodiac.get(sign_zodiac)
-
     if description:
-        return HttpResponseNotFound(f'<h2>{description}</h2>')
+        return HttpResponse(description)
     else:
         return HttpResponseNotFound("Странный знак зодиака этот ваш " + sign_zodiac + ".")
 
