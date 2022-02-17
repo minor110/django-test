@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
+from dataclasses import dataclass
 
 # Create your views here.
 zodiac = {"aries": "Овен - первый знак зодиака, планета Марс (с 21 марта по 20 апреля)",
@@ -47,6 +48,24 @@ def index(request):
     return HttpResponse(response)
 
 
+def three_three_task(request):
+    data = {
+        'year_born': 1964,
+        'city_born': 'Бейрут',
+        'movie_name': 'Матрица'
+    }
+    return render(request, 'horoscope/task.html', context=data)
+
+
+def get_guinness_world_records(request):
+    context = {
+        'power_man': 'Narve Laeret',
+        'bar_name': 'Bob’s BBQ & Grill',
+        'count_needle': 1790,
+    }
+    return render(request, 'horoscope/guinnessworldrecords.html', context=context)
+
+
 def get_type_list(request):
     li_elements = ''
     for sign in list(type_of_elements):
@@ -80,12 +99,28 @@ def get_month_day(request, month, day):
     return HttpResponseRedirect(redirect_urls)
 
 
+@dataclass
+class Person:
+    name: str
+    age: int
+
+    def __str__(self):
+        return f'This is {self.name}'
+
+
 def get_info_about_sign_zodiac(request, sign_zodiac: str):
     description = zodiac.get(sign_zodiac)
-    if description:
-        return HttpResponse(description)
-    else:
-        return HttpResponseNotFound("Странный знак зодиака этот ваш " + sign_zodiac + ".")
+    data = {
+        'description_zodiac': description,
+        'sign': sign_zodiac.title(),
+        'my_int': 40,
+        'my_float': 40.4444,
+        'my_list': [1, 2, 3, 4, 5],
+        'my_tuple': (1, 2, 3, 4, 5),
+        'my_dict': {'name': 'Jack', 'age': 40},
+        'my_class': Person('Will', 55)
+    }
+    return render(request, 'horoscope/info_zodiac.html', context=data)
 
 
 def get_info_about_sign_zodiac_by_number(request, sign_zodiac: int):
